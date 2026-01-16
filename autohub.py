@@ -8,6 +8,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime,timedelta 
 from selenium.webdriver.support.ui import Select
+import pyotp
+
+secret = "EXEMPLO"
+totp = pyotp.TOTP(secret)
+code = totp.now()
+#Pegando o codigo da autenticação de 2 fatores
 
 navegador = webdriver.Chrome()
 navegador.get("PAGINA LOGIN")
@@ -20,7 +26,13 @@ botao_coockie.click()
 
 navegador.find_element("id", "usuario").send_keys("USUARIO") 
 navegador.find_element("id", "senha").send_keys("SENHA")
+navegador.find_element("id", "autenticacao_fma" ).send_keys(code)
 #Insere as informações de login
+
+secret = "EXEMPLO DE SECRET"
+totp = pyotp.TOTP(secret)
+code = totp.now()
+print(code)
 
 botao_entrar = navegador.find_element("css selector", ".btn.btn-primary")
 botao_entrar.click()
