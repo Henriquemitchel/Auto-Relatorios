@@ -10,10 +10,10 @@ from datetime import datetime,timedelta
 from selenium.webdriver.support.ui import Select
 import pyotp
 
-secret = "EXEMPLO"
+secret = "EXEMPLO DE SECRET"
 totp = pyotp.TOTP(secret)
 code = totp.now()
-#Pegando o codigo da autenticação de 2 fatores
+#Pega o codigo da autenticação de 2 fatores
 
 navegador = webdriver.Chrome()
 navegador.get("PAGINA LOGIN")
@@ -22,27 +22,22 @@ navegador.maximize_window()
 
 botao_coockie = navegador.find_element("css selector", ".btn.btn-primary.aceite-cookie")
 botao_coockie.click()
-#Encontra o botão de aceitar coockies e clica para fechar
+#Fecha botão de aceitar coockies
 
 navegador.find_element("id", "usuario").send_keys("USUARIO") 
 navegador.find_element("id", "senha").send_keys("SENHA")
 navegador.find_element("id", "autenticacao_fma" ).send_keys(code)
-#Insere as informações de login
-
-secret = "EXEMPLO DE SECRET"
-totp = pyotp.TOTP(secret)
-code = totp.now()
-print(code)
+#Insere as informações de login e codigo de 2 fatores
 
 botao_entrar = navegador.find_element("css selector", ".btn.btn-primary")
 botao_entrar.click()
-#Clica no botão entrar pela primeira vez
+#Clica no botão entrar
 
 botao_entrar = WebDriverWait(navegador, 20).until(
     EC.presence_of_element_located((By.CSS_SELECTOR, ".btn.btn-primary"))
 )
 navegador.execute_script("arguments[0].click();", botao_entrar)
-#Aguarde o botão aparecer na tela novamente e clica
+#Aguarda o botão aparecer na tela novamente e clica
 
 time.sleep(5)
 
@@ -62,7 +57,7 @@ def periodo_relatorio():
         data_final =  hoje - timedelta(days=1)
     
     return data_incial, data_final
-#Verifica se o dia atual é segunda feira. Se sim, puxa sexta e sabado, se não, puxa o dia anterior
+#Função que verifica se o dia atual é segunda feira. Se sim, puxa sexta e sabado, se não, puxa o dia anterior
 
 data_incial, data_final = periodo_relatorio()
 
@@ -81,6 +76,7 @@ select.select_by_visible_text("FECHAMENTO DIARIO")
 time.sleep(3)
 
 navegador.find_element("id", "pbSalvar").click()
+#Salva relatorio
 
 time.sleep(20)
  
